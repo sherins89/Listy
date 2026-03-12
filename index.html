@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="format-detection" content="telephone=no"/>
 <title>Listy</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -350,8 +351,18 @@ main {
   color: var(--text);
   margin-bottom: 4px;
 }
-.c-name  { font-size: 1.05rem; font-weight: 600; color: var(--text); }
-.c-phone { font-size: 0.86rem; color: var(--text); font-weight: 500; }
+.c-name { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+
+/* PHONE — anchor tag to allow tap-to-call, color forced to override mobile browser blue */
+.c-phone {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--text) !important;
+  -webkit-text-fill-color: var(--text) !important;
+  text-decoration: none !important;
+  display: block;
+}
+
 .c-addr-link {
   font-size: 0.79rem;
   color: var(--text2);
@@ -436,6 +447,7 @@ footer {
   font-size: 0.88rem;
   font-weight: 600;
   transition: opacity 0.2s, transform 0.15s;
+  cursor: pointer;
 }
 .footer-btn:hover { opacity: 0.75; transform: scale(1.03); }
 </style>
@@ -559,7 +571,7 @@ footer {
       <div class="contact-card">
         <div class="avatar">S</div>
         <div class="c-name">Sherin</div>
-        <div class="c-phone">+1 (646) 326-5611</div>
+        <a class="c-phone" href="tel:+16463265611">+1 (646) 326-5611</a>
         <a class="c-addr-link"
            href="https://www.google.com/maps/dir/?api=1&destination=36+Bascom+Place+Staten+Island+NY"
            target="_blank" rel="noopener">36 Bascom Place<br/>Staten Island, NY</a>
@@ -572,7 +584,7 @@ footer {
       <div class="contact-card">
         <div class="avatar">R</div>
         <div class="c-name">Roseana</div>
-        <div class="c-phone">+1 (347) 358-6518</div>
+        <a class="c-phone" href="tel:+13473586518">+1 (347) 358-6518</a>
         <a class="c-addr-link"
            href="https://www.google.com/maps/dir/?api=1&destination=36+Bascom+Place+Staten+Island+NY"
            target="_blank" rel="noopener">36 Bascom Place<br/>Staten Island, NY</a>
@@ -599,7 +611,7 @@ footer {
   var ITEMS_KEY = 'growlist-items';
   var html = document.documentElement;
 
-  /* ── THEME ── */
+  /* THEME */
   function applyTheme(t) {
     html.setAttribute('data-theme', t);
     document.getElementById('tIcon').innerHTML = t === 'light' ? '&#9789;' : '&#9788;';
@@ -616,14 +628,14 @@ footer {
   try { saved = localStorage.getItem(THEME_KEY) || 'light'; } catch(e) {}
   applyTheme(saved);
 
-  /* ── EMAIL BUTTON ── */
+  /* EMAIL BUTTON */
   document.getElementById('contactBtn').addEventListener('click', function() {
     var u = 'sherin.daniel89';
     var d = 'yahoo.com';
     window.location.href = 'mailto:' + u + '@' + d;
   });
 
-  /* ── GROCERY LIST ── */
+  /* GROCERY LIST */
   function getItems() {
     try { return JSON.parse(localStorage.getItem(ITEMS_KEY)) || []; }
     catch(e) { return []; }
