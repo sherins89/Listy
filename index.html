@@ -353,14 +353,10 @@ main {
 }
 .c-name { font-size: 1.05rem; font-weight: 600; color: var(--text); }
 
-/* PHONE — anchor tag to allow tap-to-call, color forced to override mobile browser blue */
 .c-phone {
   font-size: 0.86rem;
   font-weight: 500;
-  color: var(--text) !important;
-  -webkit-text-fill-color: var(--text) !important;
-  text-decoration: none !important;
-  display: block;
+  color: var(--text);
 }
 
 .c-addr-link {
@@ -571,7 +567,7 @@ footer {
       <div class="contact-card">
         <div class="avatar">S</div>
         <div class="c-name">Sherin</div>
-        <a class="c-phone" href="tel:+16463265611">+1 (646) 326-5611</a>
+        <div class="c-phone">+1 (646) 326-5611</div>
         <a class="c-addr-link"
            href="https://www.google.com/maps/dir/?api=1&destination=36+Bascom+Place+Staten+Island+NY"
            target="_blank" rel="noopener">36 Bascom Place<br/>Staten Island, NY</a>
@@ -584,7 +580,7 @@ footer {
       <div class="contact-card">
         <div class="avatar">R</div>
         <div class="c-name">Roseana</div>
-        <a class="c-phone" href="tel:+13473586518">+1 (347) 358-6518</a>
+        <div class="c-phone">+1 (347) 358-6518</div>
         <a class="c-addr-link"
            href="https://www.google.com/maps/dir/?api=1&destination=36+Bascom+Place+Staten+Island+NY"
            target="_blank" rel="noopener">36 Bascom Place<br/>Staten Island, NY</a>
