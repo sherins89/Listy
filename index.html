@@ -225,8 +225,8 @@ main { max-width: 740px; margin: 0 auto; padding: 44px 20px 80px; }
 }
 .clear-btn:hover { color: #cc0000; }
 
-/* ── STORE SEARCH BAR ── */
-.store-search-wrap { margin-bottom: 24px; }
+/* ── STORE AUTOCOMPLETE SEARCH ── */
+.store-search-wrap { margin-bottom: 20px; }
 .store-search-label {
   font-size: 0.82rem;
   color: var(--text2);
@@ -234,10 +234,10 @@ main { max-width: 740px; margin: 0 auto; padding: 44px 20px 80px; }
   display: block;
   letter-spacing: 0.2px;
 }
-.store-search-row { display: flex; gap: 10px; }
+.store-search-row { position: relative; }
 .store-search-input {
-  flex: 1;
-  padding: 13px 16px;
+  width: 100%;
+  padding: 13px 44px 13px 16px;
   background: var(--input-bg);
   border: 1.5px solid var(--border);
   border-radius: 8px;
@@ -249,33 +249,68 @@ main { max-width: 740px; margin: 0 auto; padding: 44px 20px 80px; }
 }
 .store-search-input::placeholder { color: var(--text2); }
 .store-search-input:focus { border-color: var(--text); }
-.store-search-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 13px 20px;
-  background: var(--accent);
-  color: var(--accent-inv);
-  border: none;
-  border-radius: 8px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity 0.2s, transform 0.1s;
+.search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text2);
+  pointer-events: none;
 }
-.store-search-btn:hover  { opacity: 0.75; }
-.store-search-btn:active { transform: scale(0.97); }
 .geo-status {
-  margin-top: 8px;
+  margin-top: 6px;
   font-size: 0.78rem;
   color: var(--text2);
-  min-height: 18px;
-  transition: color 0.2s;
+  min-height: 16px;
 }
 .geo-status.error { color: #cc0000; }
 .geo-status.ok    { color: #007700; }
+
+/* Dropdown */
+.store-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 6px 24px var(--shadow);
+  z-index: 50;
+  overflow: hidden;
+  animation: slideIn 0.15s ease;
+}
+.store-dropdown.open { display: block; }
+.sd-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.sd-item:last-child { border-bottom: none; }
+.sd-item:hover, .sd-item.active { background: var(--bg2); }
+.sd-name { font-size: 0.94rem; font-weight: 600; color: var(--text); }
+.sd-addr { font-size: 0.78rem; color: var(--text2); margin-top: 2px; }
+.sd-add-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent-inv);
+  background: var(--accent);
+  padding: 2px 7px;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-top: 5px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.sd-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--text2);
+  font-size: 0.88rem;
+}
 
 /* STORES */
 #stores { margin-bottom: 64px; }
@@ -698,23 +733,22 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
       <div class="sec-line"></div>
     </div>
 
-    <!-- ── STORE SEARCH BAR ── -->
+    <!-- ── STORE SEARCH AUTOCOMPLETE ── -->
     <div class="store-search-wrap">
-      <span class="store-search-label">Search for a store near your current location</span>
-      <div class="store-search-row">
+      <span class="store-search-label">Search for a store near you &mdash; select one to add it to your list</span>
+      <div class="store-search-row" id="storeSearchRow">
         <input
           class="store-search-input"
           id="storeSearchInput"
           type="text"
-          placeholder="e.g. Trader Joe&rsquo;s, Whole Foods, Costco&hellip;"
+          autocomplete="off"
+          placeholder="Type a store name, e.g. Trader Joe&rsquo;s&hellip;"
           maxlength="120"
         />
-        <button class="store-search-btn" id="storeSearchBtn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          Find Near Me
-        </button>
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <div class="store-dropdown" id="storeDropdown"></div>
       </div>
       <div class="geo-status" id="geoStatus"></div>
     </div>
@@ -1170,62 +1204,171 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
 
   applyFavs();
 
-  /* ── STORE SEARCH (Geolocation → Google Maps) ── */
-  var geoStatus = document.getElementById('geoStatus');
+  /* ── STORE SEARCH AUTOCOMPLETE (OpenStreetMap Nominatim) ── */
+  var geoStatus   = document.getElementById('geoStatus');
+  var searchInput = document.getElementById('storeSearchInput');
+  var dropdown    = document.getElementById('storeDropdown');
+  var userLat     = null;
+  var userLng     = null;
+  var searchTimer = null;
+  var activeIdx   = -1;
+  var lastResults = [];
 
   function setStatus(msg, cls) {
     geoStatus.textContent = msg;
     geoStatus.className   = 'geo-status' + (cls ? ' ' + cls : '');
   }
 
-  function doStoreSearch() {
-    var query = document.getElementById('storeSearchInput').value.trim();
-    if (!query) {
-      document.getElementById('storeSearchInput').focus();
-      setStatus('Please enter a store name to search.', 'error');
-      return;
-    }
-
-    if (!navigator.geolocation) {
-      /* Browser has no geolocation — fall back to generic Maps search */
-      window.open(
-        'https://www.google.com/maps/search/' + encodeURIComponent(query + ' near me'),
-        '_blank', 'noopener'
-      );
-      return;
-    }
-
-    setStatus('Getting your location\u2026');
-
+  /* Silently grab location on load */
+  if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function(pos) {
-        var lat = pos.coords.latitude;
-        var lng = pos.coords.longitude;
-        setStatus('Location found \u2014 opening Google Maps\u2026', 'ok');
-        var mapsUrl =
-          'https://www.google.com/maps/search/' +
-          encodeURIComponent(query) +
-          '/@' + lat + ',' + lng + ',14z';
-        window.open(mapsUrl, '_blank', 'noopener');
-        setTimeout(function() { setStatus(''); }, 3000);
+        userLat = pos.coords.latitude;
+        userLng = pos.coords.longitude;
+        setStatus('Location ready \u2014 results will be near you', 'ok');
+        setTimeout(function() { setStatus(''); }, 2500);
       },
-      function(err) {
-        var msg = err.code === 1
-          ? 'Location access denied \u2014 opening general search instead.'
-          : 'Could not get location \u2014 opening general search instead.';
-        setStatus(msg, 'error');
-        window.open(
-          'https://www.google.com/maps/search/' + encodeURIComponent(query + ' near me'),
-          '_blank', 'noopener'
-        );
-      },
+      function() { /* silent fail — search still works, just not location-biased */ },
       { timeout: 8000, enableHighAccuracy: false }
     );
   }
 
-  document.getElementById('storeSearchBtn').addEventListener('click', doStoreSearch);
-  document.getElementById('storeSearchInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doStoreSearch();
+  function closeDropdown() {
+    dropdown.classList.remove('open');
+    dropdown.innerHTML = '';
+    activeIdx = -1;
+  }
+
+  function formatAddress(addr) {
+    /* Build a clean short address from Nominatim addressdetails */
+    var parts = [];
+    if (addr.house_number && addr.road) parts.push(addr.house_number + ' ' + addr.road);
+    else if (addr.road)                  parts.push(addr.road);
+    if (addr.city || addr.town || addr.village) parts.push(addr.city || addr.town || addr.village);
+    if (addr.state)      parts.push(addr.state);
+    if (addr.postcode)   parts.push(addr.postcode);
+    return parts.join(', ');
+  }
+
+  function renderDropdown(results) {
+    lastResults = results;
+    activeIdx   = -1;
+    dropdown.innerHTML = '';
+
+    if (!results.length) {
+      dropdown.innerHTML = '<div class="sd-empty">No results found — try a different name</div>';
+      dropdown.classList.add('open');
+      return;
+    }
+
+    results.forEach(function(r, idx) {
+      var name = r.name || r.namedetails && r.namedetails.name || r.display_name.split(',')[0];
+      var addr = formatAddress(r.address);
+
+      var item = document.createElement('div');
+      item.className = 'sd-item';
+      item.innerHTML =
+        '<span class="sd-name">' + name + '</span>' +
+        (addr ? '<span class="sd-addr">' + addr + '</span>' : '') +
+        '<span class="sd-add-tag">Tap to add</span>';
+
+      item.addEventListener('mousedown', function(e) {
+        e.preventDefault(); /* prevent blur before click fires */
+        addStoreFromResult(name, addr);
+        searchInput.value = '';
+        closeDropdown();
+      });
+
+      dropdown.appendChild(item);
+    });
+
+    dropdown.classList.add('open');
+  }
+
+  function addStoreFromResult(name, addr) {
+    var arr = getCustomStores();
+    /* Avoid exact duplicates */
+    for (var k = 0; k < arr.length; k++) {
+      if (arr[k].name === name && arr[k].address === addr) {
+        setStatus('\u2713 ' + name + ' is already in your list', 'ok');
+        setTimeout(function() { setStatus(''); }, 2500);
+        return;
+      }
+    }
+    arr.push({ name: name, address: addr });
+    setCustomStores(arr);
+    renderCustomStores();
+    setStatus('\u2713 ' + name + ' added to your list!', 'ok');
+    setTimeout(function() { setStatus(''); }, 2500);
+  }
+
+  function doSearch(query) {
+    if (!query || query.length < 2) { closeDropdown(); return; }
+
+    var url = 'https://nominatim.openstreetmap.org/search' +
+      '?q=' + encodeURIComponent(query) +
+      '&format=json&limit=6&addressdetails=1&namedetails=1' +
+      '&featuretype=amenity,shop,building' +
+      '&countrycodes=us';
+
+    /* Bias results around user location using a viewbox (~15 mile radius) */
+    if (userLat !== null && userLng !== null) {
+      var d = 0.22; /* ~15 miles */
+      url += '&viewbox=' + (userLng - d) + ',' + (userLat + d) + ',' +
+                           (userLng + d) + ',' + (userLat - d) +
+             '&bounded=0';
+    }
+
+    dropdown.innerHTML = '<div class="sd-empty">Searching\u2026</div>';
+    dropdown.classList.add('open');
+
+    fetch(url, { headers: { 'Accept-Language': 'en' } })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        /* Filter to shop/amenity types that are actual places */
+        var filtered = data.filter(function(r) {
+          return r.type !== 'administrative' && r.class !== 'boundary' && r.name;
+        });
+        renderDropdown(filtered);
+      })
+      .catch(function() {
+        dropdown.innerHTML = '<div class="sd-empty">Search unavailable — add manually below</div>';
+      });
+  }
+
+  /* Debounced input */
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimer);
+    var q = this.value.trim();
+    if (!q) { closeDropdown(); return; }
+    searchTimer = setTimeout(function() { doSearch(q); }, 320);
+  });
+
+  /* Keyboard nav through dropdown */
+  searchInput.addEventListener('keydown', function(e) {
+    var items = dropdown.querySelectorAll('.sd-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIdx = Math.min(activeIdx + 1, items.length - 1);
+      items.forEach(function(el, i) { el.classList.toggle('active', i === activeIdx); });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIdx = Math.max(activeIdx - 1, 0);
+      items.forEach(function(el, i) { el.classList.toggle('active', i === activeIdx); });
+    } else if (e.key === 'Enter' && activeIdx >= 0 && items[activeIdx]) {
+      items[activeIdx].dispatchEvent(new MouseEvent('mousedown'));
+    } else if (e.key === 'Escape') {
+      closeDropdown();
+    }
+  });
+
+  /* Close dropdown when clicking outside */
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('storeSearchRow').contains(e.target)) closeDropdown();
+  });
+
+  searchInput.addEventListener('focus', function() {
+    if (this.value.trim().length >= 2 && lastResults.length) renderDropdown(lastResults);
   });
 
   /* ── ASK HIM / HER / THEM (family members) ── */
