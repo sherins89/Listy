@@ -579,70 +579,60 @@ main { max-width: 740px; margin: 0 auto; padding: 44px 20px 80px; }
   line-height: 1.8;
 }
 
-/* Edit modal overlay */
-.edit-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.edit-overlay.open { display: flex; }
-.edit-modal {
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 28px 24px 24px;
-  width: 100%;
-  max-width: 400px;
+/* Inline edit form inside member/store card */
+.inline-edit-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  gap: 8px;
+  width: 100%;
   animation: slideIn 0.18s ease;
 }
-.edit-modal-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
+.inline-edit-form input {
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
   color: var(--text);
-  margin-bottom: 4px;
+  outline: none;
+  transition: border-color 0.2s;
 }
-.edit-modal-actions {
+.inline-edit-form input:focus { border-color: var(--text); }
+.inline-edit-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 4px;
+  gap: 8px;
+  margin-top: 2px;
 }
-.modal-save-btn {
+.ie-save-btn {
   flex: 1;
-  padding: 11px;
+  padding: 9px;
   background: var(--accent);
   color: var(--accent-inv);
   border: none;
-  border-radius: 8px;
+  border-radius: 7px;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.2s;
 }
-.modal-save-btn:hover { opacity: 0.75; }
-.modal-cancel-btn {
+.ie-save-btn:hover { opacity: 0.75; }
+.ie-cancel-btn {
   flex: 1;
-  padding: 11px;
+  padding: 9px;
   background: none;
   color: var(--text);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border-radius: 7px;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
-.modal-cancel-btn:hover { background: var(--bg2); border-color: var(--text); }
+.ie-cancel-btn:hover { background: var(--bg2); border-color: var(--text); }
 
 /* FOOTER */
 footer { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; padding: 40px 20px; transition: background 0.3s; }
@@ -821,32 +811,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
     <div class="ask-empty" id="askEmpty">No one added yet.<br/>Fill in the form above to save a family member or friend.</div>
   </section>
 
-  <!-- Edit member modal -->
-  <div class="edit-overlay" id="editOverlay">
-    <div class="edit-modal">
-      <div class="edit-modal-title">Edit Person</div>
-      <input class="ask-input" id="editName"    type="text" placeholder="Name"    maxlength="60"/>
-      <input class="ask-input" id="editPhone"   type="tel"  placeholder="Phone"   maxlength="30"/>
-      <input class="ask-input" id="editAddress" type="text" placeholder="Address" maxlength="160"/>
-      <div class="edit-modal-actions">
-        <button class="modal-cancel-btn" id="editCancelBtn">Cancel</button>
-        <button class="modal-save-btn"   id="editSaveBtn">Save Changes</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit store modal -->
-  <div class="edit-overlay" id="storeEditOverlay">
-    <div class="edit-modal">
-      <div class="edit-modal-title">Edit Store</div>
-      <input class="ask-input" id="storeEditName"    type="text" placeholder="Store name" maxlength="80"/>
-      <input class="ask-input" id="storeEditAddress" type="text" placeholder="Address"    maxlength="160"/>
-      <div class="edit-modal-actions">
-        <button class="modal-cancel-btn" id="storeEditCancelBtn">Cancel</button>
-        <button class="modal-save-btn"   id="storeEditSaveBtn">Save Changes</button>
-      </div>
-    </div>
-  </div>
 
 </main>
 
@@ -1020,8 +984,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
   renderList();
 
   /* ── CUSTOM STORES ── */
-  var CUSTOM_STORES_KEY  = 'growlist-custom-stores';
-  var storeEditingIdx    = -1;
+  var CUSTOM_STORES_KEY = 'growlist-custom-stores';
 
   function getCustomStores() {
     try { return JSON.parse(localStorage.getItem(CUSTOM_STORES_KEY)) || []; } catch(e) { return []; }
@@ -1048,53 +1011,80 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
       ? 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(s.address)
       : '#';
 
-    card.innerHTML =
-      /* tiny edit/delete buttons top-right */
-      '<div class="store-actions">' +
-        '<button class="sc-btn sc-edit"   title="Edit store"   data-ci="' + i + '">&#9998;</button>' +
-        '<button class="sc-btn sc-delete" title="Remove store" data-ci="' + i + '">&#x2715;</button>' +
-      '</div>' +
-      '<div class="store-body">' +
-        '<div class="store-name-row">' +
-          '<span class="store-name">' + s.name + '</span>' +
-          '<span class="fav-pill" style="display:none">Favorite</span>' +
+    function showView() {
+      card.innerHTML =
+        '<div class="store-actions">' +
+          '<button class="sc-btn sc-edit"   title="Edit store"   data-ci="' + i + '">&#9998;</button>' +
+          '<button class="sc-btn sc-delete" title="Remove store" data-ci="' + i + '">&#x2715;</button>' +
         '</div>' +
-        (s.address ? '<div class="store-addr">' + s.address + '</div>' : '') +
-      '</div>' +
-      '<button class="fav-toggle" title="Add to favorites" data-sid="' + sid + '">&#9733;</button>' +
-      (s.address
-        ? '<a class="dir-btn" href="' + mapsHref + '" target="_blank" rel="noopener">Directions</a>'
-        : '');
+        '<div class="store-body">' +
+          '<div class="store-name-row">' +
+            '<span class="store-name">' + s.name + '</span>' +
+            '<span class="fav-pill" style="display:none">Favorite</span>' +
+          '</div>' +
+          (s.address ? '<div class="store-addr">' + s.address + '</div>' : '') +
+        '</div>' +
+        '<button class="fav-toggle" title="Add to favorites" data-sid="' + sid + '">&#9733;</button>' +
+        (s.address ? '<a class="dir-btn" href="' + mapsHref + '" target="_blank" rel="noopener">Directions</a>' : '');
 
-    /* Edit */
-    card.querySelector('.sc-edit').addEventListener('click', function() {
-      storeEditingIdx = parseInt(this.getAttribute('data-ci'));
-      var st = getCustomStores()[storeEditingIdx];
-      document.getElementById('storeEditName').value    = st.name    || '';
-      document.getElementById('storeEditAddress').value = st.address || '';
-      document.getElementById('storeEditOverlay').classList.add('open');
-      document.getElementById('storeEditName').focus();
-    });
+      card.querySelector('.sc-edit').addEventListener('click', showInlineEdit);
 
-    /* Delete */
-    card.querySelector('.sc-delete').addEventListener('click', function() {
-      var idx = parseInt(this.getAttribute('data-ci'));
-      var arr = getCustomStores();
-      if (confirm('Remove ' + (arr[idx].name || 'this store') + '?')) {
-        arr.splice(idx, 1);
+      card.querySelector('.sc-delete').addEventListener('click', function() {
+        var arr = getCustomStores();
+        if (confirm('Remove ' + (arr[i].name || 'this store') + '?')) {
+          arr.splice(i, 1);
+          setCustomStores(arr);
+          renderCustomStores();
+        }
+      });
+
+      card.querySelector('.fav-toggle').addEventListener('click', function() {
+        var favs = getFavs();
+        if (favs[sid]) { delete favs[sid]; } else { favs[sid] = true; }
+        setFavs(favs);
+        applyFavs();
+      });
+
+      applyFavs();
+    }
+
+    function showInlineEdit() {
+      card.innerHTML =
+        '<div class="inline-edit-form" style="padding:4px 0">' +
+          '<input type="text" placeholder="Store name" value="' + (s.name    || '').replace(/"/g,'&quot;') + '" maxlength="80"  class="ie-sname"/>' +
+          '<input type="text" placeholder="Address"    value="' + (s.address || '').replace(/"/g,'&quot;') + '" maxlength="160" class="ie-saddr"/>' +
+          '<div class="inline-edit-actions">' +
+            '<button class="ie-cancel-btn">Cancel</button>' +
+            '<button class="ie-save-btn">Save</button>' +
+          '</div>' +
+        '</div>';
+
+      card.querySelector('.ie-sname').focus();
+
+      card.querySelector('.ie-cancel-btn').addEventListener('click', function() {
+        showView();
+      });
+
+      function commitEdit() {
+        var newName = card.querySelector('.ie-sname').value.trim();
+        var newAddr = card.querySelector('.ie-saddr').value.trim();
+        if (!newName) { card.querySelector('.ie-sname').focus(); return; }
+        var arr = getCustomStores();
+        arr[i] = { name: newName, address: newAddr };
         setCustomStores(arr);
         renderCustomStores();
       }
-    });
 
-    /* Fav toggle */
-    card.querySelector('.fav-toggle').addEventListener('click', function() {
-      var favs = getFavs();
-      if (favs[sid]) { delete favs[sid]; } else { favs[sid] = true; }
-      setFavs(favs);
-      applyFavs();
-    });
+      card.querySelector('.ie-save-btn').addEventListener('click', commitEdit);
+      card.querySelectorAll('input').forEach(function(inp) {
+        inp.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter')  commitEdit();
+          if (e.key === 'Escape') showView();
+        });
+      });
+    }
 
+    showView();
     return card;
   }
 
@@ -1128,27 +1118,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
     document.getElementById(id).addEventListener('keydown', function(e) {
       if (e.key === 'Enter') addCustomStore();
     });
-  });
-
-  /* Store edit modal */
-  function closeStoreEditModal() {
-    document.getElementById('storeEditOverlay').classList.remove('open');
-    storeEditingIdx = -1;
-  }
-  document.getElementById('storeEditCancelBtn').addEventListener('click', closeStoreEditModal);
-  document.getElementById('storeEditOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeStoreEditModal();
-  });
-  document.getElementById('storeEditSaveBtn').addEventListener('click', function() {
-    if (storeEditingIdx < 0) return;
-    var name    = document.getElementById('storeEditName').value.trim();
-    var address = document.getElementById('storeEditAddress').value.trim();
-    if (!name) { document.getElementById('storeEditName').focus(); return; }
-    var arr = getCustomStores();
-    arr[storeEditingIdx] = { name: name, address: address };
-    setCustomStores(arr);
-    closeStoreEditModal();
-    renderCustomStores();
   });
 
   renderCustomStores();
@@ -1260,8 +1229,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
   });
 
   /* ── ASK HIM / HER / THEM (family members) ── */
-  var PEOPLE_KEY  = 'growlist-people';
-  var editingIdx  = -1;
+  var PEOPLE_KEY = 'growlist-people';
 
   function getPeople() {
     try { return JSON.parse(localStorage.getItem(PEOPLE_KEY)) || []; } catch(e) { return []; }
@@ -1287,39 +1255,73 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
       var card = document.createElement('div');
       card.className = 'member-card';
 
-      var initial = (p.name || '?').trim()[0].toUpperCase();
-      var hasAddr = p.address && p.address.trim();
-      var hasPhone = p.phone && p.phone.trim();
+      var initial  = (p.name || '?').trim()[0].toUpperCase();
+      var hasAddr  = p.address && p.address.trim();
+      var hasPhone = p.phone   && p.phone.trim();
 
-      card.innerHTML =
-        '<div class="mc-actions">' +
-          '<button class="mc-btn mc-edit"   title="Edit"   data-i="' + i + '">&#9998;</button>' +
-          '<button class="mc-btn mc-delete" title="Remove" data-i="' + i + '">&#x2715;</button>' +
-        '</div>' +
-        '<div class="avatar">' + initial + '</div>' +
-        '<div class="c-name">'  + (p.name  || '') + '</div>' +
-        (hasPhone ? '<div class="c-phone">' + p.phone + '</div>' : '') +
-        (hasAddr  ? '<a class="c-addr-link" href="' + mapsUrl(p.address) + '" target="_blank" rel="noopener">' + p.address.replace(/,/g, ',<br/>') + '</a>' : '') +
-        (hasPhone ? '<a class="call-btn" href="tel:' + p.phone.replace(/\s/g,'') + '">&#128222;&nbsp; Call</a>' : '') +
-        (hasAddr  ? '<a class="dir-btn-contact" href="' + mapsUrl(p.address) + '" target="_blank" rel="noopener">Directions</a>' : '');
+      function showView() {
+        card.innerHTML =
+          '<div class="mc-actions">' +
+            '<button class="mc-btn mc-edit"   title="Edit"   data-i="' + i + '">&#9998;</button>' +
+            '<button class="mc-btn mc-delete" title="Remove" data-i="' + i + '">&#x2715;</button>' +
+          '</div>' +
+          '<div class="avatar">' + initial + '</div>' +
+          '<div class="c-name">'  + (p.name || '') + '</div>' +
+          (hasPhone ? '<div class="c-phone">' + p.phone + '</div>' : '') +
+          (hasAddr  ? '<a class="c-addr-link" href="' + mapsUrl(p.address) + '" target="_blank" rel="noopener">' + p.address.replace(/,/g, ',<br/>') + '</a>' : '') +
+          (hasPhone ? '<a class="call-btn" href="tel:' + p.phone.replace(/\s/g,'') + '">&#128222;&nbsp; Call</a>' : '') +
+          (hasAddr  ? '<a class="dir-btn-contact" href="' + mapsUrl(p.address) + '" target="_blank" rel="noopener">Directions</a>' : '');
 
-      /* Edit */
-      card.querySelector('.mc-edit').addEventListener('click', function() {
-        var idx = parseInt(this.getAttribute('data-i'));
-        openEditModal(idx);
-      });
+        card.querySelector('.mc-edit').addEventListener('click', showInlineEdit);
+        card.querySelector('.mc-delete').addEventListener('click', function() {
+          var arr = getPeople();
+          if (confirm('Remove ' + (arr[i].name || 'this person') + '?')) {
+            arr.splice(i, 1);
+            setPeople(arr);
+            renderPeople();
+          }
+        });
+      }
 
-      /* Delete */
-      card.querySelector('.mc-delete').addEventListener('click', function() {
-        var idx = parseInt(this.getAttribute('data-i'));
-        var arr = getPeople();
-        if (confirm('Remove ' + (arr[idx].name || 'this person') + '?')) {
-          arr.splice(idx, 1);
+      function showInlineEdit() {
+        card.innerHTML =
+          '<div class="inline-edit-form">' +
+            '<input type="text" placeholder="Name"    value="' + (p.name    || '').replace(/"/g,'&quot;') + '" maxlength="60"  class="ie-name"/>' +
+            '<input type="tel"  placeholder="Phone"   value="' + (p.phone   || '').replace(/"/g,'&quot;') + '" maxlength="30"  class="ie-phone"/>' +
+            '<input type="text" placeholder="Address" value="' + (p.address || '').replace(/"/g,'&quot;') + '" maxlength="160" class="ie-addr"/>' +
+            '<div class="inline-edit-actions">' +
+              '<button class="ie-cancel-btn">Cancel</button>' +
+              '<button class="ie-save-btn">Save</button>' +
+            '</div>' +
+          '</div>';
+
+        card.querySelector('.ie-name').focus();
+
+        card.querySelector('.ie-cancel-btn').addEventListener('click', function() {
+          showView();
+        });
+
+        function commitInlineEdit() {
+          var newName  = card.querySelector('.ie-name').value.trim();
+          var newPhone = card.querySelector('.ie-phone').value.trim();
+          var newAddr  = card.querySelector('.ie-addr').value.trim();
+          if (!newName) { card.querySelector('.ie-name').focus(); return; }
+          var arr = getPeople();
+          arr[i] = { name: newName, phone: newPhone, address: newAddr };
           setPeople(arr);
           renderPeople();
         }
-      });
 
+        card.querySelector('.ie-save-btn').addEventListener('click', commitInlineEdit);
+        card.querySelectorAll('input').forEach(function(inp) {
+          inp.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter')  commitInlineEdit();
+            if (e.key === 'Escape') showView();
+          });
+        });
+      }
+
+      showView();
       grid.appendChild(card);
     });
   }
@@ -1344,44 +1346,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); text-align
     document.getElementById(id).addEventListener('keydown', function(e) {
       if (e.key === 'Enter') addPerson();
     });
-  });
-
-  /* Edit modal */
-  function openEditModal(idx) {
-    var p = getPeople()[idx];
-    editingIdx = idx;
-    document.getElementById('editName').value    = p.name    || '';
-    document.getElementById('editPhone').value   = p.phone   || '';
-    document.getElementById('editAddress').value = p.address || '';
-    document.getElementById('editOverlay').classList.add('open');
-    document.getElementById('editName').focus();
-  }
-
-  function closeEditModal() {
-    document.getElementById('editOverlay').classList.remove('open');
-    editingIdx = -1;
-  }
-
-  document.getElementById('editCancelBtn').addEventListener('click', closeEditModal);
-  document.getElementById('editOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeEditModal();
-  });
-
-  document.getElementById('editSaveBtn').addEventListener('click', function() {
-    if (editingIdx < 0) return;
-    var name    = document.getElementById('editName').value.trim();
-    var phone   = document.getElementById('editPhone').value.trim();
-    var address = document.getElementById('editAddress').value.trim();
-    if (!name) { document.getElementById('editName').focus(); return; }
-    var arr = getPeople();
-    arr[editingIdx] = { name: name, phone: phone, address: address };
-    setPeople(arr);
-    closeEditModal();
-    renderPeople();
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { closeEditModal(); closeStoreEditModal(); }
   });
 
   renderPeople();
