@@ -76,7 +76,6 @@ header {
   transition: opacity 0.2s;
 }
 .logo:hover { opacity: 0.6; }
-
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -92,26 +91,13 @@ header {
   color: var(--text);
   transition: all 0.2s;
 }
-.theme-toggle:hover {
-  background: var(--accent);
-  color: var(--accent-inv);
-  border-color: var(--accent);
-}
+.theme-toggle:hover { background: var(--accent); color: var(--accent-inv); border-color: var(--accent); }
 
 /* MAIN */
-main {
-  max-width: 740px;
-  margin: 0 auto;
-  padding: 44px 20px 80px;
-}
+main { max-width: 740px; margin: 0 auto; padding: 44px 20px 80px; }
 
 /* SECTION HEADING */
-.sec-head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 8px;
-}
+.sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
 .sec-head h2 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.6rem;
@@ -119,27 +105,12 @@ main {
   color: var(--text);
   white-space: nowrap;
 }
-.sec-line {
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-.sec-sub {
-  font-size: 0.82rem;
-  color: var(--text2);
-  margin-bottom: 24px;
-  margin-top: 0;
-  letter-spacing: 0.2px;
-}
+.sec-line { flex: 1; height: 1px; background: var(--border); }
+.sec-sub { font-size: 0.82rem; color: var(--text2); margin-bottom: 24px; margin-top: 0; letter-spacing: 0.2px; }
 
 /* GROCERY */
 #grocery { margin-bottom: 64px; }
-
-.add-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 24px;
-}
+.add-row { display: flex; gap: 10px; margin-bottom: 24px; }
 .add-input {
   flex: 1;
   padding: 13px 16px;
@@ -154,7 +125,6 @@ main {
 }
 .add-input::placeholder { color: var(--text2); }
 .add-input:focus { border-color: var(--text); }
-
 .add-btn {
   padding: 13px 22px;
   background: var(--accent);
@@ -182,15 +152,14 @@ main {
 }
 
 .grocery-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-
 .g-item {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   background: var(--card);
   border: 1.5px solid var(--border);
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   transition: border-color 0.2s;
   animation: slideIn 0.22s ease;
 }
@@ -199,32 +168,42 @@ main {
   to   { opacity: 1; transform: translateY(0); }
 }
 .g-item:hover { border-color: var(--text); }
+.g-cb { width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--accent); }
+.g-label { flex: 1; font-size: 0.97rem; color: var(--text); cursor: pointer; word-break: break-word; }
+.g-label.done { text-decoration: line-through; opacity: 0.45; }
 
-.g-cb {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  flex-shrink: 0;
-  accent-color: var(--accent);
-}
-.g-label {
+/* Inline edit input */
+.g-edit-input {
   flex: 1;
+  padding: 5px 10px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--text);
+  border-radius: 6px;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.97rem;
   color: var(--text);
-  cursor: pointer;
+  outline: none;
 }
-.g-del {
+
+/* Item action buttons */
+.g-action-btn {
   background: none;
   border: none;
   color: var(--text2);
   cursor: pointer;
-  font-size: 1rem;
-  padding: 2px 6px;
+  font-size: 0.88rem;
+  padding: 4px 7px;
   border-radius: 4px;
-  opacity: 0.4;
+  opacity: 0.45;
   transition: opacity 0.2s, color 0.2s;
+  flex-shrink: 0;
+  line-height: 1;
 }
-.g-del:hover { opacity: 1; color: #cc0000; }
+.g-action-btn:hover    { opacity: 1; }
+.g-edit-btn:hover      { color: #0066cc; }
+.g-save-btn            { opacity: 1; color: #007700; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.2px; }
+.g-save-btn:hover      { color: #004e00; }
+.g-del:hover           { color: #cc0000; }
 
 .list-footer {
   display: flex;
@@ -246,10 +225,61 @@ main {
 }
 .clear-btn:hover { color: #cc0000; }
 
+/* ── STORE SEARCH BAR ── */
+.store-search-wrap { margin-bottom: 24px; }
+.store-search-label {
+  font-size: 0.82rem;
+  color: var(--text2);
+  margin-bottom: 8px;
+  display: block;
+  letter-spacing: 0.2px;
+}
+.store-search-row { display: flex; gap: 10px; }
+.store-search-input {
+  flex: 1;
+  padding: 13px 16px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.97rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, background 0.3s;
+}
+.store-search-input::placeholder { color: var(--text2); }
+.store-search-input:focus { border-color: var(--text); }
+.store-search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 13px 20px;
+  background: var(--accent);
+  color: var(--accent-inv);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.store-search-btn:hover  { opacity: 0.75; }
+.store-search-btn:active { transform: scale(0.97); }
+.geo-status {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--text2);
+  min-height: 18px;
+  transition: color 0.2s;
+}
+.geo-status.error { color: #cc0000; }
+.geo-status.ok    { color: #007700; }
+
 /* STORES */
 #stores { margin-bottom: 64px; }
 .stores-grid { display: flex; flex-direction: column; gap: 12px; }
-
 .store-card {
   background: var(--card);
   border: 1.5px solid var(--border);
@@ -257,30 +287,14 @@ main {
   padding: 18px 20px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.store-card:hover {
-  border-color: var(--text);
-  box-shadow: 0 4px 16px var(--shadow);
-}
-.store-card.fav {
-  background: var(--fav-bg);
-  border-color: var(--fav-border);
-}
-.store-body { flex: 1; }
-.store-name-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-.store-name {
-  font-size: 0.97rem;
-  font-weight: 600;
-  color: var(--text);
-}
+.store-card:hover { border-color: var(--text); box-shadow: 0 4px 16px var(--shadow); }
+.store-card.fav   { background: var(--fav-bg); border-color: var(--fav-border); }
+.store-body       { flex: 1; min-width: 0; }
+.store-name-row   { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+.store-name       { font-size: 0.97rem; font-weight: 600; color: var(--text); }
 .fav-pill {
   font-size: 0.66rem;
   font-weight: 700;
@@ -292,6 +306,27 @@ main {
   text-transform: uppercase;
 }
 .store-addr { font-size: 0.82rem; color: var(--text2); }
+
+/* Favorite toggle star button */
+.fav-toggle {
+  flex-shrink: 0;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  color: var(--text2);
+}
+.fav-toggle:hover        { border-color: #e8a000; color: #e8a000; transform: scale(1.1); }
+.fav-toggle.active       { border-color: #e8a000; color: #e8a000; background: rgba(232,160,0,0.1); }
+.fav-toggle.active:hover { background: rgba(232,160,0,0.18); }
 
 .dir-btn {
   flex-shrink: 0;
@@ -311,139 +346,225 @@ main {
 }
 .dir-btn:hover { opacity: 0.75; transform: scale(1.03); }
 
-/* CONTACTS */
-#contacts { margin-bottom: 64px; }
-.contacts-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-@media (max-width: 500px) { .contacts-grid { grid-template-columns: 1fr; } }
+/* ASK SECTION */
+#ask { margin-bottom: 64px; }
 
-.contact-card {
+/* Add member form */
+.ask-form {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ask-form-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 2px;
+}
+.ask-input {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, background 0.3s;
+}
+.ask-input::placeholder { color: var(--text2); }
+.ask-input:focus { border-color: var(--text); }
+.ask-add-btn {
+  padding: 12px 20px;
+  background: var(--accent);
+  color: var(--accent-inv);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  align-self: flex-end;
+  width: 100%;
+}
+.ask-add-btn:hover  { opacity: 0.75; }
+.ask-add-btn:active { transform: scale(0.97); }
+
+/* Member cards grid */
+.ask-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 520px) { .ask-grid { grid-template-columns: 1fr; } }
+
+.member-card {
   background: var(--card);
   border: 1.5px solid var(--border);
   border-radius: 10px;
-  padding: 30px 20px 24px;
+  padding: 26px 18px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   text-align: center;
+  position: relative;
   transition: border-color 0.2s, box-shadow 0.2s;
+  animation: slideIn 0.22s ease;
 }
-.contact-card:hover {
-  border-color: var(--text);
-  box-shadow: 0 4px 16px var(--shadow);
-}
-.avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--bg2);
-  border: 2px solid var(--border);
+.member-card:hover { border-color: var(--text); box-shadow: 0 4px 16px var(--shadow); }
+
+/* Top-right action buttons */
+.mc-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
+  gap: 4px;
 }
-.c-name { font-size: 1.05rem; font-weight: 600; color: var(--text); }
-
-.c-phone {
-  font-size: 0.86rem;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.c-addr-link {
-  font-size: 0.79rem;
-  color: var(--text2);
-  line-height: 1.6;
-  text-decoration: underline dotted;
-  text-underline-offset: 3px;
-  transition: color 0.2s;
+.mc-btn {
+  background: none;
+  border: none;
   cursor: pointer;
+  color: var(--text2);
+  font-size: 0.82rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  opacity: 0.4;
+  transition: opacity 0.2s, color 0.2s;
+  line-height: 1;
+}
+.mc-btn:hover       { opacity: 1; }
+.mc-edit:hover      { color: #0066cc; }
+.mc-delete:hover    { color: #cc0000; }
+
+.avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--bg2); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem; font-weight: 700; color: var(--text);
+  margin-bottom: 4px; flex-shrink: 0;
+}
+.c-name  { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.c-phone { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+.c-addr-link {
+  font-size: 0.78rem; color: var(--text2); line-height: 1.55;
+  text-decoration: underline dotted; text-underline-offset: 3px;
+  transition: color 0.2s; cursor: pointer; text-align: center;
 }
 .c-addr-link:hover { color: var(--text); }
 
 .call-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 6px;
-  padding: 10px 26px;
-  background: var(--accent);
-  color: var(--accent-inv);
-  text-decoration: none;
-  border-radius: 6px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
-  transition: opacity 0.2s, transform 0.15s;
-  width: 100%;
-  justify-content: center;
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 6px; padding: 10px 26px;
+  background: var(--accent); color: var(--accent-inv);
+  text-decoration: none; border-radius: 6px;
+  font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600;
+  transition: opacity 0.2s, transform 0.15s; width: 100%; justify-content: center;
 }
 .call-btn:hover { opacity: 0.75; transform: scale(1.02); }
 
 .dir-btn-contact {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 9px 22px;
-  background: none;
-  color: var(--text);
-  border: 1.5px solid var(--border);
-  border-radius: 6px;
-  text-decoration: none;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  width: 100%;
-  transition: all 0.2s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 9px 22px; background: none; color: var(--text);
+  border: 1.5px solid var(--border); border-radius: 6px;
+  text-decoration: none; font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem; font-weight: 600; width: 100%; transition: all 0.2s;
 }
 .dir-btn-contact:hover { border-color: var(--text); background: var(--bg2); }
 
-/* FOOTER */
-footer {
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
+/* Empty state for members */
+.ask-empty {
   text-align: center;
-  padding: 40px 20px;
-  transition: background 0.3s;
+  padding: 40px 24px;
+  border: 1.5px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text2);
+  font-size: 0.93rem;
+  line-height: 1.8;
 }
-.footer-name {
+
+/* Edit modal overlay */
+.edit-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.edit-overlay.open { display: flex; }
+.edit-modal {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px 24px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  animation: slideIn 0.18s ease;
+}
+.edit-modal-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
-.footer-bio {
-  font-size: 0.86rem;
-  color: var(--text2);
-  margin-bottom: 18px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
+.edit-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
 }
-.footer-btn {
-  display: inline-block;
-  padding: 10px 28px;
+.modal-save-btn {
+  flex: 1;
+  padding: 11px;
   background: var(--accent);
   color: var(--accent-inv);
-  text-decoration: none;
-  border-radius: 6px;
+  border: none;
+  border-radius: 8px;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  transition: opacity 0.2s, transform 0.15s;
   cursor: pointer;
+  transition: opacity 0.2s;
+}
+.modal-save-btn:hover { opacity: 0.75; }
+.modal-cancel-btn {
+  flex: 1;
+  padding: 11px;
+  background: none;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.modal-cancel-btn:hover { background: var(--bg2); border-color: var(--text); }
+
+/* FOOTER */
+footer { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; padding: 40px 20px; transition: background 0.3s; }
+.footer-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.footer-bio { font-size: 0.86rem; color: var(--text2); margin-bottom: 18px; max-width: 400px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+.footer-btn {
+  display: inline-block; padding: 10px 28px;
+  background: var(--accent); color: var(--accent-inv);
+  text-decoration: none; border-radius: 6px;
+  font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600;
+  transition: opacity 0.2s, transform 0.15s; cursor: pointer;
 }
 .footer-btn:hover { opacity: 0.75; transform: scale(1.03); }
 </style>
@@ -470,7 +591,7 @@ footer {
       <h2>This Week's List</h2>
       <div class="sec-line"></div>
     </div>
-    <p class="sec-sub">Add items &nbsp;&middot;&nbsp; check them off when done</p>
+    <p class="sec-sub">Add items &nbsp;&middot;&nbsp; check them off when done &nbsp;&middot;&nbsp; tap ✏ to edit</p>
 
     <div class="add-row">
       <input class="add-input" id="itemInput" type="text"
@@ -497,55 +618,81 @@ footer {
       <h2>Nearby Stores</h2>
       <div class="sec-line"></div>
     </div>
-    <br/>
 
-    <div class="stores-grid">
+    <!-- ── STORE SEARCH BAR ── -->
+    <div class="store-search-wrap">
+      <span class="store-search-label">Search for a store near your current location</span>
+      <div class="store-search-row">
+        <input
+          class="store-search-input"
+          id="storeSearchInput"
+          type="text"
+          placeholder="e.g. Trader Joe&rsquo;s, Whole Foods, Costco&hellip;"
+          maxlength="120"
+        />
+        <button class="store-search-btn" id="storeSearchBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          Find Near Me
+        </button>
+      </div>
+      <div class="geo-status" id="geoStatus"></div>
+    </div>
 
-      <div class="store-card fav">
+    <div class="stores-grid" id="storesGrid">
+
+      <div class="store-card" data-store-id="superfresh">
         <div class="store-body">
           <div class="store-name-row">
             <span class="store-name">Super Fresh</span>
-            <span class="fav-pill">Favorite</span>
+            <span class="fav-pill" style="display:none">Favorite</span>
           </div>
           <div class="store-addr">778 Manor Rd, Staten Island, NY 10314</div>
         </div>
+        <button class="fav-toggle" title="Add to favorites" data-sid="superfresh">&#9733;</button>
         <a class="dir-btn"
            href="https://www.google.com/maps/dir/?api=1&destination=778+Manor+Rd+Staten+Island+NY+10314"
            target="_blank" rel="noopener">Directions</a>
       </div>
 
-      <div class="store-card fav">
+      <div class="store-card" data-store-id="stopshop-forest">
         <div class="store-body">
           <div class="store-name-row">
             <span class="store-name">Stop &amp; Shop &mdash; Forest Ave</span>
-            <span class="fav-pill">Favorite</span>
+            <span class="fav-pill" style="display:none">Favorite</span>
           </div>
           <div class="store-addr">1351 Forest Ave, Staten Island, NY 10302</div>
         </div>
+        <button class="fav-toggle" title="Add to favorites" data-sid="stopshop-forest">&#9733;</button>
         <a class="dir-btn"
            href="https://www.google.com/maps/dir/?api=1&destination=1351+Forest+Ave+Staten+Island+NY+10302"
            target="_blank" rel="noopener">Directions</a>
       </div>
 
-      <div class="store-card">
+      <div class="store-card" data-store-id="stopshop-richmond">
         <div class="store-body">
           <div class="store-name-row">
             <span class="store-name">Stop &amp; Shop &mdash; Richmond Ave</span>
+            <span class="fav-pill" style="display:none">Favorite</span>
           </div>
           <div class="store-addr">1441 Richmond Ave, Staten Island, NY 10314</div>
         </div>
+        <button class="fav-toggle" title="Add to favorites" data-sid="stopshop-richmond">&#9733;</button>
         <a class="dir-btn"
            href="https://www.google.com/maps/dir/?api=1&destination=1441+Richmond+Ave+Staten+Island+NY+10314"
            target="_blank" rel="noopener">Directions</a>
       </div>
 
-      <div class="store-card">
+      <div class="store-card" data-store-id="shoprite">
         <div class="store-body">
           <div class="store-name-row">
             <span class="store-name">ShopRite &mdash; Richmond Ave</span>
+            <span class="fav-pill" style="display:none">Favorite</span>
           </div>
           <div class="store-addr">985 Richmond Ave, Staten Island, NY 10314</div>
         </div>
+        <button class="fav-toggle" title="Add to favorites" data-sid="shoprite">&#9733;</button>
         <a class="dir-btn"
            href="https://www.google.com/maps/dir/?api=1&destination=985+Richmond+Ave+Staten+Island+NY+10314"
            target="_blank" rel="noopener">Directions</a>
@@ -554,30 +701,41 @@ footer {
     </div>
   </section>
 
-  <!-- CONTACTS -->
-  <section id="contacts">
+  <!-- ASK HIM / HER / THEM -->
+  <section id="ask">
     <div class="sec-head">
-      <h2>Contacts</h2>
+      <h2>Ask Him / Her / Them</h2>
       <div class="sec-line"></div>
     </div>
-    <br/>
+    <p class="sec-sub">Save family &amp; friends &nbsp;&middot;&nbsp; call or get directions in one tap</p>
 
-    <div class="contacts-grid">
+    <!-- Add member form -->
+    <div class="ask-form">
+      <div class="ask-form-title">Add a person</div>
+      <input class="ask-input" id="askName"    type="text"  placeholder="Name (e.g. Mom, Dad, Grandma&hellip;)"  maxlength="60"/>
+      <input class="ask-input" id="askPhone"   type="tel"   placeholder="Phone number"                           maxlength="30"/>
+      <input class="ask-input" id="askAddress" type="text"  placeholder="Address (optional)"                     maxlength="160"/>
+      <button class="ask-add-btn" id="askAddBtn">+ Add Person</button>
+    </div>
 
-      <div class="contact-card">
-        <div class="avatar">S</div>
-        <div class="c-name">Sherin</div>
-        <div class="c-phone">+1 (646) 326-5611</div>
-        <a class="c-addr-link"
-           href="https://www.google.com/maps/dir/?api=1&destination=36+Bascom+Place+Staten+Island+NY"
-           target="_blank" rel="noopener">36 Bascom Place<br/>Staten Island, NY</a>
-        <a class="call-btn" href="tel:+16463265611">Call</a>
-        <a class="dir-btn-contact"
-           href="https://www.google.com/maps/dir/?api=1&destination=36+Bascom+Place+Staten+Island+NY"
-           target="_blank" rel="noopener">Directions</a>
+    <!-- Cards -->
+    <div class="ask-grid"  id="askGrid"></div>
+    <div class="ask-empty" id="askEmpty">No one added yet.<br/>Fill in the form above to save a family member or friend.</div>
+  </section>
+
+  <!-- Edit member modal -->
+  <div class="edit-overlay" id="editOverlay">
+    <div class="edit-modal">
+      <div class="edit-modal-title">Edit Person</div>
+      <input class="ask-input" id="editName"    type="text" placeholder="Name"    maxlength="60"/>
+      <input class="ask-input" id="editPhone"   type="tel"  placeholder="Phone"   maxlength="30"/>
+      <input class="ask-input" id="editAddress" type="text" placeholder="Address" maxlength="160"/>
+      <div class="edit-modal-actions">
+        <button class="modal-cancel-btn" id="editCancelBtn">Cancel</button>
+        <button class="modal-save-btn"   id="editSaveBtn">Save Changes</button>
       </div>
     </div>
-  </section>
+  </div>
 
 </main>
 
@@ -591,42 +749,34 @@ footer {
 (function() {
   var THEME_KEY = 'growlist-theme';
   var ITEMS_KEY = 'growlist-items';
+  var FAVS_KEY  = 'growlist-store-favs';
   var html = document.documentElement;
 
-  /* THEME */
+  /* ── THEME ── */
   function applyTheme(t) {
     html.setAttribute('data-theme', t);
-    document.getElementById('tIcon').innerHTML = t === 'light' ? '&#9789;' : '&#9788;';
+    document.getElementById('tIcon').innerHTML    = t === 'light' ? '&#9789;' : '&#9788;';
     document.getElementById('tLabel').textContent = t === 'light' ? 'Dark Mode' : 'Light Mode';
     try { localStorage.setItem(THEME_KEY, t); } catch(e) {}
   }
-
   document.getElementById('themeToggle').addEventListener('click', function() {
-    var current = html.getAttribute('data-theme');
-    applyTheme(current === 'light' ? 'dark' : 'light');
+    applyTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
   });
+  var savedTheme = 'light';
+  try { savedTheme = localStorage.getItem(THEME_KEY) || 'light'; } catch(e) {}
+  applyTheme(savedTheme);
 
-  var saved = 'light';
-  try { saved = localStorage.getItem(THEME_KEY) || 'light'; } catch(e) {}
-  applyTheme(saved);
-
-  /* EMAIL BUTTON */
+  /* ── EMAIL BUTTON ── */
   document.getElementById('contactBtn').addEventListener('click', function() {
-    var u = 'sherin.daniel89';
-    var d = 'yahoo.com';
-    window.location.href = 'mailto:' + u + '@' + d;
+    window.location.href = 'mailto:sherin.daniel89@yahoo.com';
   });
 
-  /* GROCERY LIST */
+  /* ── GROCERY LIST ── */
   function getItems() {
-    try { return JSON.parse(localStorage.getItem(ITEMS_KEY)) || []; }
-    catch(e) { return []; }
+    try { return JSON.parse(localStorage.getItem(ITEMS_KEY)) || []; } catch(e) { return []; }
   }
   function setItems(arr) {
     try { localStorage.setItem(ITEMS_KEY, JSON.stringify(arr)); } catch(e) {}
-  }
-  function esc(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   function renderList() {
@@ -635,7 +785,6 @@ footer {
     var empty  = document.getElementById('emptyState');
     var footer = document.getElementById('listFooter');
     var count  = document.getElementById('listCount');
-
     ul.innerHTML = '';
 
     if (!items.length) {
@@ -643,7 +792,6 @@ footer {
       footer.style.display = 'none';
       return;
     }
-
     empty.style.display  = 'none';
     footer.style.display = 'flex';
     count.textContent    = items.length + ' item' + (items.length !== 1 ? 's' : '') + ' remaining';
@@ -651,12 +799,39 @@ footer {
     items.forEach(function(text, i) {
       var li = document.createElement('li');
       li.className = 'g-item';
-      li.innerHTML =
-        '<input type="checkbox" class="g-cb" id="cb' + i + '"/>' +
-        '<label class="g-label" for="cb' + i + '">' + esc(text) + '</label>' +
-        '<button class="g-del" title="Remove">&#x2715;</button>';
 
-      li.querySelector('.g-cb').addEventListener('change', function() {
+      /* Checkbox */
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'g-cb';
+      cb.id = 'cb' + i;
+
+      /* Label */
+      var label = document.createElement('label');
+      label.className = 'g-label';
+      label.setAttribute('for', 'cb' + i);
+      label.textContent = text;
+
+      /* Edit button (pencil) */
+      var editBtn = document.createElement('button');
+      editBtn.className = 'g-action-btn g-edit-btn';
+      editBtn.title = 'Edit item';
+      editBtn.innerHTML = '&#9998;';
+
+      /* Delete button */
+      var delBtn = document.createElement('button');
+      delBtn.className = 'g-action-btn g-del';
+      delBtn.title = 'Remove';
+      delBtn.innerHTML = '&#x2715;';
+
+      li.appendChild(cb);
+      li.appendChild(label);
+      li.appendChild(editBtn);
+      li.appendChild(delBtn);
+
+      /* Check off → remove after short delay */
+      cb.addEventListener('change', function() {
+        label.classList.add('done');
         var idx = i;
         setTimeout(function() {
           var arr = getItems();
@@ -666,11 +841,46 @@ footer {
         }, 350);
       });
 
-      li.querySelector('.g-del').addEventListener('click', function() {
+      /* Delete */
+      delBtn.addEventListener('click', function() {
         var arr = getItems();
         arr.splice(i, 1);
         setItems(arr);
         renderList();
+      });
+
+      /* Edit — swap label for inline input */
+      editBtn.addEventListener('click', function() {
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'g-edit-input';
+        inp.value = text;
+        inp.maxLength = 120;
+
+        var saveBtn = document.createElement('button');
+        saveBtn.className = 'g-action-btn g-save-btn';
+        saveBtn.title = 'Save';
+        saveBtn.textContent = 'Save';
+
+        li.replaceChild(inp, label);
+        li.replaceChild(saveBtn, editBtn);
+        inp.focus();
+        inp.select();
+
+        function commitEdit() {
+          var newVal = inp.value.trim();
+          if (!newVal) { inp.focus(); return; }
+          var arr = getItems();
+          arr[i] = newVal;
+          setItems(arr);
+          renderList();
+        }
+
+        saveBtn.addEventListener('click', commitEdit);
+        inp.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter')  commitEdit();
+          if (e.key === 'Escape') renderList(); /* cancel */
+        });
       });
 
       ul.appendChild(li);
@@ -690,16 +900,246 @@ footer {
   }
 
   document.getElementById('addBtn').addEventListener('click', addItem);
-
   document.getElementById('itemInput').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') addItem();
   });
-
   document.getElementById('clearBtn').addEventListener('click', function() {
     if (confirm('Clear your entire list?')) { setItems([]); renderList(); }
   });
-
   renderList();
+
+  /* ── STORE FAVORITES ── */
+  function getFavs() {
+    try { return JSON.parse(localStorage.getItem(FAVS_KEY)) || {}; } catch(e) { return {}; }
+  }
+  function setFavs(obj) {
+    try { localStorage.setItem(FAVS_KEY, JSON.stringify(obj)); } catch(e) {}
+  }
+
+  function applyFavs() {
+    var favs = getFavs();
+    document.querySelectorAll('.store-card').forEach(function(card) {
+      var sid   = card.getAttribute('data-store-id');
+      var isFav = !!favs[sid];
+      var pill  = card.querySelector('.fav-pill');
+      var btn   = card.querySelector('.fav-toggle');
+
+      card.classList.toggle('fav', isFav);
+      if (pill) pill.style.display = isFav ? '' : 'none';
+      if (btn)  {
+        btn.classList.toggle('active', isFav);
+        btn.title = isFav ? 'Remove from favorites' : 'Add to favorites';
+      }
+    });
+
+    /* Re-sort: favorites bubble to the top */
+    var grid  = document.getElementById('storesGrid');
+    var cards = Array.from(grid.querySelectorAll('.store-card'));
+    cards.sort(function(a, b) {
+      var af = favs[a.getAttribute('data-store-id')] ? 1 : 0;
+      var bf = favs[b.getAttribute('data-store-id')] ? 1 : 0;
+      return bf - af;
+    });
+    cards.forEach(function(c) { grid.appendChild(c); });
+  }
+
+  document.querySelectorAll('.fav-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var sid  = btn.getAttribute('data-sid');
+      var favs = getFavs();
+      if (favs[sid]) { delete favs[sid]; } else { favs[sid] = true; }
+      setFavs(favs);
+      applyFavs();
+    });
+  });
+
+  applyFavs();
+
+  /* ── STORE SEARCH (Geolocation → Google Maps) ── */
+  var geoStatus = document.getElementById('geoStatus');
+
+  function setStatus(msg, cls) {
+    geoStatus.textContent = msg;
+    geoStatus.className   = 'geo-status' + (cls ? ' ' + cls : '');
+  }
+
+  function doStoreSearch() {
+    var query = document.getElementById('storeSearchInput').value.trim();
+    if (!query) {
+      document.getElementById('storeSearchInput').focus();
+      setStatus('Please enter a store name to search.', 'error');
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      /* Browser has no geolocation — fall back to generic Maps search */
+      window.open(
+        'https://www.google.com/maps/search/' + encodeURIComponent(query + ' near me'),
+        '_blank', 'noopener'
+      );
+      return;
+    }
+
+    setStatus('Getting your location\u2026');
+
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        setStatus('Location found \u2014 opening Google Maps\u2026', 'ok');
+        var mapsUrl =
+          'https://www.google.com/maps/search/' +
+          encodeURIComponent(query) +
+          '/@' + lat + ',' + lng + ',14z';
+        window.open(mapsUrl, '_blank', 'noopener');
+        setTimeout(function() { setStatus(''); }, 3000);
+      },
+      function(err) {
+        var msg = err.code === 1
+          ? 'Location access denied \u2014 opening general search instead.'
+          : 'Could not get location \u2014 opening general search instead.';
+        setStatus(msg, 'error');
+        window.open(
+          'https://www.google.com/maps/search/' + encodeURIComponent(query + ' near me'),
+          '_blank', 'noopener'
+        );
+      },
+      { timeout: 8000, enableHighAccuracy: false }
+    );
+  }
+
+  document.getElementById('storeSearchBtn').addEventListener('click', doStoreSearch);
+  document.getElementById('storeSearchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doStoreSearch();
+  });
+
+  /* ── ASK HIM / HER / THEM (family members) ── */
+  var PEOPLE_KEY  = 'growlist-people';
+  var editingIdx  = -1;
+
+  function getPeople() {
+    try { return JSON.parse(localStorage.getItem(PEOPLE_KEY)) || []; } catch(e) { return []; }
+  }
+  function setPeople(arr) {
+    try { localStorage.setItem(PEOPLE_KEY, JSON.stringify(arr)); } catch(e) {}
+  }
+
+  function mapsUrl(addr) {
+    return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(addr);
+  }
+
+  function renderPeople() {
+    var people = getPeople();
+    var grid   = document.getElementById('askGrid');
+    var empty  = document.getElementById('askEmpty');
+    grid.innerHTML = '';
+
+    if (!people.length) { empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+
+    people.forEach(function(p, i) {
+      var card = document.createElement('div');
+      card.className = 'member-card';
+
+      var initial = (p.name || '?').trim()[0].toUpperCase();
+      var hasAddr = p.address && p.address.trim();
+      var hasPhone = p.phone && p.phone.trim();
+
+      card.innerHTML =
+        '<div class="mc-actions">' +
+          '<button class="mc-btn mc-edit"   title="Edit"   data-i="' + i + '">&#9998;</button>' +
+          '<button class="mc-btn mc-delete" title="Remove" data-i="' + i + '">&#x2715;</button>' +
+        '</div>' +
+        '<div class="avatar">' + initial + '</div>' +
+        '<div class="c-name">'  + (p.name  || '') + '</div>' +
+        (hasPhone ? '<div class="c-phone">' + p.phone + '</div>' : '') +
+        (hasAddr  ? '<a class="c-addr-link" href="' + mapsUrl(p.address) + '" target="_blank" rel="noopener">' + p.address.replace(/,/g, ',<br/>') + '</a>' : '') +
+        (hasPhone ? '<a class="call-btn" href="tel:' + p.phone.replace(/\s/g,'') + '">&#128222;&nbsp; Call</a>' : '') +
+        (hasAddr  ? '<a class="dir-btn-contact" href="' + mapsUrl(p.address) + '" target="_blank" rel="noopener">Directions</a>' : '');
+
+      /* Edit */
+      card.querySelector('.mc-edit').addEventListener('click', function() {
+        var idx = parseInt(this.getAttribute('data-i'));
+        openEditModal(idx);
+      });
+
+      /* Delete */
+      card.querySelector('.mc-delete').addEventListener('click', function() {
+        var idx = parseInt(this.getAttribute('data-i'));
+        var arr = getPeople();
+        if (confirm('Remove ' + (arr[idx].name || 'this person') + '?')) {
+          arr.splice(idx, 1);
+          setPeople(arr);
+          renderPeople();
+        }
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function addPerson() {
+    var name    = document.getElementById('askName').value.trim();
+    var phone   = document.getElementById('askPhone').value.trim();
+    var address = document.getElementById('askAddress').value.trim();
+    if (!name) { document.getElementById('askName').focus(); return; }
+    var arr = getPeople();
+    arr.push({ name: name, phone: phone, address: address });
+    setPeople(arr);
+    document.getElementById('askName').value    = '';
+    document.getElementById('askPhone').value   = '';
+    document.getElementById('askAddress').value = '';
+    document.getElementById('askName').focus();
+    renderPeople();
+  }
+
+  document.getElementById('askAddBtn').addEventListener('click', addPerson);
+  ['askName','askPhone','askAddress'].forEach(function(id) {
+    document.getElementById(id).addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') addPerson();
+    });
+  });
+
+  /* Edit modal */
+  function openEditModal(idx) {
+    var p = getPeople()[idx];
+    editingIdx = idx;
+    document.getElementById('editName').value    = p.name    || '';
+    document.getElementById('editPhone').value   = p.phone   || '';
+    document.getElementById('editAddress').value = p.address || '';
+    document.getElementById('editOverlay').classList.add('open');
+    document.getElementById('editName').focus();
+  }
+
+  function closeEditModal() {
+    document.getElementById('editOverlay').classList.remove('open');
+    editingIdx = -1;
+  }
+
+  document.getElementById('editCancelBtn').addEventListener('click', closeEditModal);
+  document.getElementById('editOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeEditModal();
+  });
+
+  document.getElementById('editSaveBtn').addEventListener('click', function() {
+    if (editingIdx < 0) return;
+    var name    = document.getElementById('editName').value.trim();
+    var phone   = document.getElementById('editPhone').value.trim();
+    var address = document.getElementById('editAddress').value.trim();
+    if (!name) { document.getElementById('editName').focus(); return; }
+    var arr = getPeople();
+    arr[editingIdx] = { name: name, phone: phone, address: address };
+    setPeople(arr);
+    closeEditModal();
+    renderPeople();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeEditModal();
+  });
+
+  renderPeople();
+
 })();
 </script>
 </body>
